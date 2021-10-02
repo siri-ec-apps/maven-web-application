@@ -2,7 +2,7 @@ node
 
 {
 def mavenHome = tool name: "maven3.8.2"
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * *')])])
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3'))])
 
  stage('CheckOutCode'){ 
  git branch: 'development', credentialsId: '5d7892ff-f5a5-40b5-8916-1cda81d6c57f', url: 'https://github.com/siri-ec-apps/maven-web-application.git'
