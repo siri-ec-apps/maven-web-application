@@ -1,0 +1,29 @@
+node
+{
+def mavenHome = tool name: "maven3.8.2"
+
+ stage('CheckOutCode'){ 
+ git branch: 'development', credentialsId: '5d7892ff-f5a5-40b5-8916-1cda81d6c57f', url: 'https://github.com/siri-ec-apps/maven-web-application.git'
+}
+
+
+stage('Build'){
+ sh "${mavenHome}/bin/mvn clean package"
+ }
+ /*
+ stage('ExecuteSonarQubeReport'){
+ sh "${mavenHome}/bin/mvn clean sonar:sonar"
+ }
+ 
+ stage('UploadArtifactIntoNexusRepo'){
+ sh "${mavenHome}/bin/mvn clean deploy"
+ }
+ 
+ stage('DeploytheAppintoTomcat'){
+ sshagent(['a0bb6a8c-976e-47b7-82a2-e0d1d1cf2852']) {
+ sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@65.2.143.36:/opt/apache-tomcat-9.0.53/webapps" 
+
+ }
+ }
+*/
+ }//Closing bracket for node
