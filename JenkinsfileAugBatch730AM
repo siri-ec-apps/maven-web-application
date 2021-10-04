@@ -1,0 +1,40 @@
+pipeline{
+ agent any
+ tools{
+ maven "maven3.8.2"
+
+ }
+ 
+ 
+ stages{
+ stage('CheckoutCode'){
+ steps{
+ git branch: 'development', credentialsId: '5d7892ff-f5a5-40b5-8916-1cda81d6c57f', url: 'https://github.com/siri-ec-apps/maven-web-application.git'
+ 
+ }
+ }
+ stage('Build'){
+ steps{
+ sh "mvn clean package"
+ }
+ }
+ stage('ExecuteSonarQubeReport'){
+ steps{
+ sh "mvn sonar:sonar"
+ }
+ }
+ stage('UploadArtifactIntoNexusRepo'){
+ steps{
+ sh "mvn clean deploy"
+ }
+ }
+ stage('DeploytheAppintoTomcat'){
+ steps{
+ sshagent(['a0bb6a8c-976e-47b7-82a2-e0d1d1cf2852']) {
+  sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@15.206.158.39:/opt/apache-tomcat-9.0.53/webapps"
+ }
+ }
+  }
+ }
+ }
+ 
